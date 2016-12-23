@@ -20,15 +20,10 @@
         }
     }
     .body{
-        float: left;
         width: 100%;
         margin-top: 15px;
         .content{
-            padding-left: 10px;
-            padding-right: 20px;
-            .main{
-                margin-top: 10px;
-            }
+            padding: 0 20px;
         }
     }
     
@@ -41,36 +36,30 @@
         </Menu-item>
     </Menu>
     <Row class="body" type="flex">
-        <i-col span="3">
-        <Menu mode="vertical" :theme="theme2" :open-keys="['1']" width="220px" accordion>
-            <Submenu key="1">
-                <template slot="title">
-                    <Icon type="android-person"></Icon>
-                    用户及权限管理
-                </template>
-                <Menu-item key="1-1">用户列表</Menu-item>
-                <Menu-item key="1-2">权限管理</Menu-item>
-            </Submenu>
-            <Submenu key="2">
-                <template slot="title">
-                    <Icon type="briefcase"></Icon>
-                    应用管理
-                </template>
-                <Menu-item key="2-1">应用列表</Menu-item>
-                <Menu-item key="2-2">权限组管理</Menu-item>
-            </Submenu>
-        </Menu>
+	<i-col span="3">
+            <Menu mode="vertical" :theme="theme2" :open-keys="['1']" width="220px" accordion>
+                <Submenu key="1">
+                    <template slot="title">
+                        <Icon type="android-person"></Icon>
+                        用户及权限管理
+                    </template>
+                    <Menu-item key="1-1">用户列表</Menu-item>
+                    <Menu-item key="1-2">权限管理</Menu-item>
+                </Submenu>
+                <Submenu key="2">
+                    <template slot="title">
+                        <Icon type="briefcase"></Icon>
+                        应用管理
+                    </template>
+                    <Menu-item key="2-1">应用列表</Menu-item>
+                    <Menu-item key="2-2">权限组管理</Menu-item>
+                </Submenu>
+            </Menu>
         </i-col>
-        <i-col span="21">
-	<div class="content">
-            <Breadcrumb>
-                <Breadcrumb-item href="/">Home</Breadcrumb-item>
-                <Breadcrumb-item>用户列表</Breadcrumb-item>
-            </Breadcrumb>
-            <div class="main">
+	<i-col span="21">
+            <div class="content">
                 <i-table border :columns="columns1" :data="data1"></i-table>
-            <div>
-        </div>
+            </div>
         </i-col>
     </Row>
 </template>
