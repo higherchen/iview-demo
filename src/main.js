@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
 import App from 'components/app.vue';
 import Routers from './router';
@@ -8,6 +9,10 @@ import 'iview/dist/styles/iview.css';
 
 Vue.use(VueRouter);
 Vue.use(iView);
+
+Vue.use(VueResource);
+Vue.http.options.emulateJSON = true;
+Vue.http.options.timeout = 10000; // 10s
 
 // 开启debug模式
 Vue.config.debug = true;
