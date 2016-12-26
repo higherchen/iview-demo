@@ -1,11 +1,9 @@
-/**
- * Created by aresn on 16/8/22.
- */
 const routers = {
-    '/index': {
-        component (resolve) {
-            require(['./views/index.vue'], resolve);
-        }
+    '/home': {
+        component: require('./views/index.vue')
+    },
+    '/users': {
+        component: require('./views/users.vue')
     }
 };
 export default routers;

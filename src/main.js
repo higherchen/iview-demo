@@ -1,6 +1,3 @@
-/**
- * Created by aresn on 16/6/20.
- */
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import App from 'components/app.vue';
@@ -32,6 +29,6 @@ router.afterEach(() => {
 });
 
 router.redirect({
-    '*': "/index"
+    '*': "/home"
 });
 router.start(App, '#app');
