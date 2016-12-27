@@ -1,3 +1,3 @@
 <template>
-  <h3>Welcome to bilibili backend!</h3>
+  <h3>Welcome to authority backend!</h3>
 </template>

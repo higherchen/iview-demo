@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
+import VueValidator from 'vue-validator';
 import VueRouter from 'vue-router';
 import App from 'components/app.vue';
 import Routers from './router';
@@ -8,6 +9,7 @@ import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 
 Vue.use(VueRouter);
+Vue.use(VueValidator);
 Vue.use(iView);
 
 Vue.use(VueResource);
