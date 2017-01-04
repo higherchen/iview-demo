@@ -5,6 +5,7 @@
 </style>
 <template>
     <i-table border :columns="columns" :data="users"></i-table>
+    <Modal :visible.sync="confirm_modal" @on-ok="remove"><p>确认删除这个用户？</p></Modal>
     <div class="pager"><Page :total="total" :current="current" :page-size="20" show-total @on-change="setPager"></Page></div>
 </template>
 <script>
@@ -36,11 +37,20 @@
                     {
                         title: '手机',
                         key: 'telephone'
+                    },
+                    {
+                        title: '操作',
+                        key: 'action',
+                        render (row, column, index) {
+                            return `<i-button type="primary" size="small" v-link="{path: '/users/${row.id}'}">更新</i-button> <i-button type="error" size="small" @click="confirm_remove(${index})">删除</i-button>`;
+                        }
                     }
                 ],
+                confirm_modal: false,
                 users: [],
                 total: 0,
-                current: 1
+                current: 1,
+                to_delete: 0
             };
         },
         methods: {
@@ -50,8 +60,30 @@
                 var newQuery = $route.query;
 
                 $route.router.go({
-                    path: "/users",
+                    path: "/users/",
                     query: newQuery
+                });
+            },
+            update (index) {
+                this.$Modal.info({
+                    title: '用户信息',
+                    content: `姓名：${this.users[index].username}`
+                })
+            },
+            confirm_remove (index) {
+                this.confirm_modal = true;
+                this.to_delete = index;
+            },
+            remove () {
+                this.$http.delete('/api/users/' + this.users[this.to_delete].id).then(function(response) {
+                    if (parseInt(response.data.code) == 0) {
+                        this.$Message.success('删除成功', 2);
+                        this.users.splice(this.to_delete, 1);
+                        this.to_delete = 0;
+                        this.total--;
+                    } else {
+                        this.$Message.error('删除失败', 2);
+                    }
                 });
             }
         }

@@ -43,7 +43,7 @@
                         <Icon type="android-person"></Icon>
                         用户及权限管理
                     </template>
-                    <Menu-item v-link="{path: '/users'}" key="1-1">用户列表</Menu-item>
+                    <Menu-item v-link="{path: '/users/'}" key="1-1">用户列表</Menu-item>
                     <Menu-item key="1-2">权限管理</Menu-item>
                 </Submenu>
                 <Submenu key="2">
