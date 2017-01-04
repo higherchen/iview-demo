@@ -54,7 +54,7 @@
             };
         },
         methods: {
-            setPager(page) {
+            setPager (page) {
                 var $route = this.$route;
                 $route.query.page = page;
                 var newQuery = $route.query;
@@ -63,12 +63,6 @@
                     path: "/users/",
                     query: newQuery
                 });
-            },
-            update (index) {
-                this.$Modal.info({
-                    title: '用户信息',
-                    content: `姓名：${this.users[index].username}`
-                })
             },
             confirm_remove (index) {
                 this.confirm_modal = true;
