@@ -11,7 +11,7 @@
 <script>
     module.exports = {
         route: {
-            'data': function (transition) {
+            data: function (transition) {
                 return getUsers.call(this);
             }
         },

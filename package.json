@@ -15,7 +15,9 @@
   "author": "Aresn",
   "license": "MIT",
   "dependencies": {
-    "iview": "^0.9.10",
+    "html-webpack-plugin": "^2.26.0",
+    "iview": "^0.9.12",
+    "less": "^2.7.2",
     "vue": "^1.0.26",
     "vue-resource": "^0.6.1",
     "vue-router": "^0.7.13",

@@ -37,22 +37,22 @@
             </div>
         </Affix>
         <div class="content">
-            <Menu class="menu" mode="vertical" :theme="theme2" :open-keys="['1']" width="220px" accordion>
+            <Menu class="menu" :active-key="actived" mode="vertical" :theme="widget" :open-keys="opened" width="220px" accordion>
                 <Submenu key="1">
                     <template slot="title">
                         <Icon type="android-person"></Icon>
                         用户及权限管理
                     </template>
-                    <Menu-item v-link="{path: '/users/'}" key="1-1">用户列表</Menu-item>
-                    <Menu-item key="1-2">权限管理</Menu-item>
+                    <Menu-item v-link="{path: '/users/'}" key="users">用户列表</Menu-item>
+                    <Menu-item v-link="{path: '/authority'}" key="authority">权限管理</Menu-item>
                 </Submenu>
                 <Submenu key="2">
                     <template slot="title">
                         <Icon type="briefcase"></Icon>
                         应用管理
                     </template>
-                    <Menu-item key="2-1">应用列表</Menu-item>
-                    <Menu-item key="2-2">权限组管理</Menu-item>
+                    <Menu-item v-link="{path: '/apps'}" key="apps">应用列表</Menu-item>
+                    <Menu-item v-link="{path: '/groups'}" key="groups">权限组管理</Menu-item>
                 </Submenu>
             </Menu>
             <div class="main">
@@ -65,18 +65,10 @@
     export default {
         data () {
             return {
-                theme1: 'primary',
-                theme2: 'light'
+                widget: 'light',
+                opened: this.$route.menu.opened,
+                actived: this.$route.menu.actived
             }
-        },
-        ready () {
-
-        },
-        beforeDestroy () {
-
-        },
-        methods: {
-
         }
     }
 </script>

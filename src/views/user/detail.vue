@@ -66,7 +66,7 @@
                     telephone: this.telephone
                 }).then(function(response) {
                     if (parseInt(response.data.code) == 0) {
-                        this.$Message.success('更新成功', 2, function () {
+                        this.$Message.success('更新成功', 1, function () {
                             window.history.go(-1);
                         });
                     } else {
