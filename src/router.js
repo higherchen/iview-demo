@@ -25,7 +25,15 @@ const routers = {
     '/apps': {
         name: 'apps',
         menu: { opened : ['2'], actived: 'apps' },
-        component: require('./views/app/index.vue')
+        component: require('./views/app/index.vue'),
+        subRoutes: {
+            '/': {
+                component: require('./views/app/list.vue')
+            },
+            '/:id': {
+                component: require('./views/app/detail.vue')
+            }
+        }
     },
     '/groups': {
         name: 'groups',

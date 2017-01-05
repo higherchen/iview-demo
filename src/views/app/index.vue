@@ -1,3 +1,3 @@
 <template>
-    <h3>This is in app module.</h3>
+    <router-view class="app-view"></router-view>
 </template>

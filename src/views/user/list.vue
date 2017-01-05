@@ -20,6 +20,7 @@
                 columns: [
                     {
                         title: 'ID',
+                        width: 60,
                         key: 'id'
                     },
                     {
@@ -40,6 +41,7 @@
                     },
                     {
                         title: '操作',
+                        width: 180,
                         key: 'action',
                         render (row, column, index) {
                             return `<i-button type="primary" size="small" v-link="{path: '/users/${row.id}'}">更新</i-button> <i-button type="error" size="small" @click="confirm_remove(${index})">删除</i-button>`;
