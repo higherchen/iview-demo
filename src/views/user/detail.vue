@@ -1,46 +1,27 @@
 <style scoped lang="less">
     .form{
         padding: 20px 100px;
-        .form-group{
-            font-weight: 700;
-            font-size: 14px;
-            margin-bottom: 1em;
-        }
     }
 </style>
 <template>
-    <div class="form">
-        <div class="form-group">
-            <Row>
-                <i-col span="4">用户名：</i-col>
-                <i-col span="20"><i-input disabled :value.sync="username" placeholder="请输入用户名"></i-input></i-col>
-            </Row>
-        </div>
-        <div class="form-group">
-            <Row>
-                <i-col span="4">昵称：</label></i-col>
-                <i-col span="20"><i-input :value.sync="nickname" placeholder="请输入昵称"></i-input></i-col>
-            </Row>
-        </div>
-        <div class="form-group">
-            <Row>
-                <i-col span="4">邮箱：</label></i-col>
-                <i-col span="20"><i-input :value.sync="email" placeholder="请输入邮箱"></i-input></i-col>
-            </Row>
-        </div>
-        <div class="form-group">
-            <Row>
-                <i-col span="4">手机：</label></i-col>
-                <i-col span="20"><i-input :value.sync="telephone" placeholder="请输入手机"></i-input></i-col>
-            </Row>
-        </div>
-        <div class="form-group">
-            <center>
-                <i-button type="success" @click="submit">提交</i-button> 
-                <i-button @click="back">返回</i-button>
-            </center>
-        </div>
-    </div>
+    <i-form class="form" :model="user_handle" label-position="left" :label-width="100">
+        <Form-item label="用户名">
+            <i-input disabled :value.sync="username"></i-input>
+        </Form-item>
+        <Form-item label="昵称">
+            <i-input :value.sync="nickname" placeholder="请输入昵称"></i-input>
+        </Form-item>
+        <Form-item label="邮箱">
+            <i-input :value.sync="email" placeholder="请输入邮箱"></i-input>
+        </Form-item>
+        <Form-item label="手机">
+            <i-input :value.sync="telephone" placeholder="请输入手机号码"></i-input>
+        </Form-item>
+        <Form-item>
+            <i-button type="primary" @click="submit">提交</i-button>
+            <i-button type="ghost" @click="back" style="margin-left: 8px">取消</i-button>
+        </Form-item>
+    </i-form>
 </template>
 <script>
     module.exports = {

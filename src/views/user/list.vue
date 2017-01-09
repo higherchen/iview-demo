@@ -91,7 +91,7 @@
         var queryIndex = path.indexOf('?');
         var queryString = (queryIndex !== -1) ? path.substring(queryIndex) : '';
         return _this.$http.get('/api/users' + queryString).then(function(response) {
-            _this.users = response.data.data.users;
+            _this.users = response.data.data.users ? response.data.data.users : [];
             _this.total = parseInt(response.data.data.total);
             return {
                 users: _this.users,

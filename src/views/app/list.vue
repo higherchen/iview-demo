@@ -1,4 +1,27 @@
+<style scoped lang="less">
+    .search-form{
+        padding: 10px 0px;
+    }
+</style>
 <template>
+    <Modal
+        :visible.sync="new_app"
+        title="新增App"
+        @on-ok="ok"
+        @on-cancel="cancel">
+        <i-form class="form" :model="user_handle" label-position="left" :label-width="100">
+            <Form-item label="App name">
+                <i-input :value.sync="to_create.name" placeholder="请输入App名称"></i-input>
+            </Form-item>
+            <Form-item label="App key">
+                <i-input :value.sync="to_create.app_key" placeholder="请输入App key"></i-input>
+            </Form-item>
+            <Form-item label="App secret">
+                <i-input :value.sync="to_create.app_secret" placeholder="请输入App secret"></i-input>
+            </Form-item>
+        </i-form>
+    </Modal>
+    <div class="search-form"><i-button type="primary" @click="new_app = true">新增App</i-button></div>
     <i-table border :columns="columns" :data="apps"></i-table>
     <Modal :visible.sync="confirm_modal" @on-ok="remove"><p>确认删除这个app？（请慎重操作）</p></Modal>
 </template>
@@ -11,6 +34,7 @@
         },
         data: function() {
             return {
+                new_app: false,
                 columns: [
                     {
                         title: 'ID',
@@ -40,10 +64,30 @@
                 ],
                 confirm_modal: false,
                 apps: [],
-                to_delete: 0
+                to_delete: 0,
+                to_create: {
+                    name: '',
+                    app_key: ''
+                }
             };
         },
         methods: {
+            ok () {
+                this.$http.post('/api/apps', this.to_create).then(function(response){
+                    if (parseInt(response.data.code) == 0) {
+                        this.$Message.success('新增成功', 2);
+                        var created = this.to_create;
+                        created.id = parseInt(response.data.data.id);
+                        created.app_secret = response.data.data.app_secret;
+                        this.apps.push(created);
+                    } else {
+                        this.$Message.error('新增失败', 2);
+                    }
+                });
+            },
+            cancel () {
+                this.$Message.info('点击了取消');
+            },
             confirm_remove (index) {
                 this.confirm_modal = true;
                 this.to_delete = index;
@@ -54,7 +98,6 @@
                         this.$Message.success('删除成功', 2);
                         this.apps.splice(this.to_delete, 1);
                         this.to_delete = 0;
-                        this.total--;
                     } else {
                         this.$Message.error('删除失败', 2);
                     }
@@ -69,7 +112,7 @@
         var queryIndex = path.indexOf('?');
         var queryString = (queryIndex !== -1) ? path.substring(queryIndex) : '';
         return _this.$http.get('/api/apps' + queryString).then(function(response) {
-            _this.apps = response.data.data;
+            _this.apps = response.data.data ? response.data.data : [];
             return {
                 apps: _this.apps
             };
