@@ -24,7 +24,7 @@
     module.exports = {
         route: {
             'data': function (transition) {
-                return getApp.call(this);
+                this.getApp();
             }
         },
         data: function() {
@@ -36,6 +36,14 @@
             }
         },
         methods: {
+            getApp () { 
+                var id = this.$route.params.id;
+                this.$http.get('/api/apps/' + id).then(function(response) {
+                    this.name = response.data.data.name;
+                    this.app_key = response.data.data.app_key;
+                    this.app_secret = response.data.data.app_secret;
+                });
+            },
             submit () {
                 this.$http.post('/api/apps/' + this.id, {
                     name: this.name,
@@ -55,20 +63,5 @@
                 window.history.go(-1);
             }
         }
-    }
-
-    function getApp() {
-        var _this = this;
-        var id = _this.$route.params.id;
-        return _this.$http.get('/api/apps/' + id).then(function(response) {
-            _this.name = response.data.data.name;
-            _this.app_key = response.data.data.app_key;
-            _this.app_secret = response.data.data.app_secret;
-            return {
-                name: _this.name,
-                app_key: _this.app_key,
-                app_secret: _this.app_secret
-            };
-        });
     }
 </script>

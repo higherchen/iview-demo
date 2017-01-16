@@ -16,20 +16,21 @@
             <Form-item label="App key">
                 <i-input :value.sync="to_create.app_key" placeholder="请输入App key"></i-input>
             </Form-item>
-            <Form-item label="App secret">
-                <i-input :value.sync="to_create.app_secret" placeholder="请输入App secret"></i-input>
-            </Form-item>
         </i-form>
     </Modal>
-    <div class="search-form"><i-button type="primary" @click="new_app = true">新增App</i-button></div>
-    <i-table border :columns="columns" :data="apps"></i-table>
-    <Modal :visible.sync="confirm_modal" @on-ok="remove"><p>确认删除这个app？（请慎重操作）</p></Modal>
+    <div class="search-form">
+        <i-button type="primary" @click="new_app = true">新增App</i-button>
+    </div>
+    <div v-if="dataReady">
+        <i-table border :columns="columns" :data="apps"></i-table>
+        <Modal :visible.sync="confirm_modal" @on-ok="remove"><p>确认删除这个app？（请慎重操作）</p></Modal>
+    </div>
 </template>
 <script>
     module.exports = {
         route: {
             data: function (transition) {
-                return getApps.call(this);
+                this.getApps();
             }
         },
         data: function() {
@@ -68,18 +69,31 @@
                 to_create: {
                     name: '',
                     app_key: ''
-                }
+                },
+                dataReady: false
             };
         },
         methods: {
+            getApps () {
+                var path = this.$route.path;
+                var queryIndex = path.indexOf('?');
+                var queryString = (queryIndex !== -1) ? path.substring(queryIndex) : '';
+                this.$http.get('/api/apps' + queryString).then(function(response) {
+                    this.apps = response.data.data ? response.data.data : [];
+                    this.dataReady = true;
+                });
+            },
             ok () {
                 this.$http.post('/api/apps', this.to_create).then(function(response){
                     if (parseInt(response.data.code) == 0) {
                         this.$Message.success('新增成功', 2);
-                        var created = this.to_create;
-                        created.id = parseInt(response.data.data.id);
-                        created.app_secret = response.data.data.app_secret;
-                        this.apps.push(created);
+                        this.apps.push({
+                            id: parseInt(response.data.data.id),
+                            name: this.to_create.name,
+                            app_key: this.to_create.app_key,
+                            app_secret: response.data.data.app_secret
+                        });
+                        this.to_create.name = this.to_create.app_key = '';
                     } else {
                         this.$Message.error('新增失败', 2);
                     }
@@ -105,18 +119,4 @@
             }
         }
     }
-
-    function getApps() {
-        var _this = this;
-        var path = _this.$route.path;
-        var queryIndex = path.indexOf('?');
-        var queryString = (queryIndex !== -1) ? path.substring(queryIndex) : '';
-        return _this.$http.get('/api/apps' + queryString).then(function(response) {
-            _this.apps = response.data.data ? response.data.data : [];
-            return {
-                apps: _this.apps
-            };
-        });
-    }
-
 </script>

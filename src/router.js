@@ -13,7 +13,7 @@ const routers = {
                 component: require('./views/user/list.vue')
             },
             '/:id': {
-              component: require('./views/user/detail.vue')
+                component: require('./views/user/detail.vue')
             }
         }
     },

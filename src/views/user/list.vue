@@ -4,15 +4,19 @@
     }
 </style>
 <template>
-    <i-table border :columns="columns" :data="users"></i-table>
-    <Modal :visible.sync="confirm_modal" @on-ok="remove"><p>确认删除这个用户？</p></Modal>
-    <div class="pager"><Page :total="total" :current="current" :page-size="20" show-total @on-change="setPager"></Page></div>
+    <div v-if="dataReady">
+        <i-table :columns="columns" :data="users" border></i-table>
+        <Modal :visible.sync="confirm_modal" @on-ok="remove"><p>确认删除这个用户？</p></Modal>
+        <div class="pager">
+            <Page :total="total" :current="current" :page-size="20" show-total @on-change="setPager"></Page>
+        </div>
+    </div>
 </template>
 <script>
     module.exports = {
         route: {
             data: function (transition) {
-                return getUsers.call(this);
+                this.getUsers();
             }
         },
         data: function() {
@@ -52,15 +56,27 @@
                 users: [],
                 total: 0,
                 current: 1,
-                to_delete: 0
+                to_delete: 0,
+                dataReady: false
             };
         },
         methods: {
+            getUsers () {
+                var path = this.$route.path;
+                var queryIndex = path.indexOf('?');
+                var queryString = (queryIndex !== -1) ? path.substring(queryIndex) : '';
+                this.$http.get('/api/users' + queryString).then(function(response) {
+                    if (response.data.data.users) {
+                        this.users = response.data.data.users;
+                    }
+                    this.total = parseInt(response.data.data.total);
+                    this.dataReady = true;
+                });
+            },
             setPager (page) {
                 var $route = this.$route;
                 $route.query.page = page;
                 var newQuery = $route.query;
-
                 $route.router.go({
                     path: "/users/",
                     query: newQuery
@@ -84,20 +100,4 @@
             }
         }
     }
-
-    function getUsers() {
-        var _this = this;
-        var path = _this.$route.path;
-        var queryIndex = path.indexOf('?');
-        var queryString = (queryIndex !== -1) ? path.substring(queryIndex) : '';
-        return _this.$http.get('/api/users' + queryString).then(function(response) {
-            _this.users = response.data.data.users ? response.data.data.users : [];
-            _this.total = parseInt(response.data.data.total);
-            return {
-                users: _this.users,
-                total: _this.total
-            };
-        });
-    }
-
 </script>

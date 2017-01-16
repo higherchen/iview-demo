@@ -14,7 +14,7 @@ Vue.use(iView);
 
 Vue.use(VueResource);
 Vue.http.options.emulateJSON = true;
-Vue.http.options.timeout = 10000; // 10s
+Vue.http.options.timeout = 2000; // 2s
 
 // 开启debug模式
 Vue.config.debug = true;

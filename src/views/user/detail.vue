@@ -27,7 +27,7 @@
     module.exports = {
         route: {
             'data': function (transition) {
-                return getUser.call(this);
+                this.getUser();
             }
         },
         data: function() {
@@ -40,6 +40,15 @@
             }
         },
         methods: {
+            getUser () {
+                var id = this.$route.params.id;
+                this.$http.get('/api/users/' + id).then(function(response) {
+                    this.username = response.data.data.username;
+                    this.nickname = response.data.data.nickname;
+                    this.email = response.data.data.email;
+                    this.telephone = response.data.data.telephone;
+                });
+            },
             submit () {
                 this.$http.post('/api/users/' + this.id, {
                     nickname: this.nickname,
@@ -59,22 +68,5 @@
                 window.history.go(-1);
             }
         }
-    }
-
-    function getUser() {
-        var _this = this;
-        var id = _this.$route.params.id;
-        return _this.$http.get('/api/users/' + id).then(function(response) {
-            _this.username = response.data.data.username;
-            _this.nickname = response.data.data.nickname;
-            _this.email = response.data.data.email;
-            _this.telephone = response.data.data.telephone;
-            return {
-                username: _this.username,
-                nickname: _this.nickname,
-                email: _this.email,
-                telephone: _this.telephone
-            };
-        });
     }
 </script>
