@@ -2,8 +2,36 @@
     .pager{
         margin: 10px 0;
     }
+    .search-form{
+        padding: 10px 0px;
+    }
 </style>
 <template>
+    <Modal :visible.sync="new_user" title="新增用户" @on-ok="add">
+        <i-form class="form" label-position="left" :label-width="100">
+            <Form-item label="账号">
+                <i-input :value.sync="to_create.username" placeholder="请输入账号（用户名）"></i-input>
+            </Form-item>
+            <Form-item label="昵称">
+                <i-input :value.sync="to_create.nickname" placeholder="请输入昵称"></i-input>
+            </Form-item>
+            <Form-item label="邮箱">
+                <i-input :value.sync="to_create.email" placeholder="请输入邮箱"></i-input>
+            </Form-item>
+            <Form-item label="手机">
+                <i-input :value.sync="to_create.telephone" placeholder="请输入手机号"></i-input>
+            </Form-item>
+        </i-form>
+    </Modal>
+    <i-form v-ref:form-inline :model="searchForm" inline>
+        <Form-item prop="user">
+            <i-input type="text" :value.sync="searchForm.keyword" placeholder="输入账号/昵称"></i-input>
+        </Form-item>
+        <Form-item>
+            <i-button type="primary" @click="search()">搜索</i-button>
+            <i-button type="primary" @click="new_user = true">新增用户</i-button>
+        </Form-item>
+    </i-form>
     <div v-if="dataReady">
         <i-table :columns="columns" :data="users" border></i-table>
         <Modal :visible.sync="confirm_modal" @on-ok="remove"><p>确认删除这个用户？</p></Modal>
@@ -17,10 +45,17 @@
         route: {
             data: function (transition) {
                 this.getUsers();
+                if (this.$route.query.name) {
+                    this.searchForm.keyword = this.$route.query.name;
+                }
             }
         },
         data: function() {
             return {
+                searchForm: {
+                    keyword: ''
+                },
+                new_user: false,
                 columns: [
                     {
                         title: 'ID',
@@ -57,10 +92,48 @@
                 total: 0,
                 current: 1,
                 to_delete: 0,
+                to_create: {
+                    username: '',
+                    nickname: '',
+                    email: '',
+                    telephone: ''
+                },
                 dataReady: false
             };
         },
         methods: {
+            search () {
+                var path = this.$route.path;
+                var $route = this.$route;
+                var keyword = this.searchForm.keyword;
+                if (keyword) {
+                    $route.query.name = keyword;
+                } else {
+                    delete($route.query.name);
+                }
+                var newQuery = $route.query;
+                $route.router.go({
+                    path: "/users/",
+                    query: newQuery
+                });
+            },
+            add () {
+                this.$http.post('/api/users', this.to_create).then(function(response){
+                    if (parseInt(response.data.code) == 0) {
+                        this.$Message.success('新增成功', 2);
+                        this.users.splice(0, 0, {
+                            id: parseInt(response.data.data.id),
+                            username: this.to_create.username,
+                            nickname: this.to_create.nickname,
+                            email: this.to_create.email,
+                            telephone: this.to_create.telephone
+                        });
+                        this.to_create.username = this.to_create.nickname = this.to_create.email = this.to_create.telephone = '';
+                    } else {
+                        this.$Message.error('新增失败', 2);
+                    }
+                });
+            },
             getUsers () {
                 var path = this.$route.path;
                 var queryIndex = path.indexOf('?');

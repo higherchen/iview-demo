@@ -4,12 +4,8 @@
     }
 </style>
 <template>
-    <Modal
-        :visible.sync="new_app"
-        title="新增App"
-        @on-ok="ok"
-        @on-cancel="cancel">
-        <i-form class="form" :model="user_handle" label-position="left" :label-width="100">
+    <Modal :visible.sync="new_app" title="新增App" @on-ok="add">
+        <i-form class="form" label-position="left" :label-width="100">
             <Form-item label="App name">
                 <i-input :value.sync="to_create.name" placeholder="请输入App名称"></i-input>
             </Form-item>
@@ -74,16 +70,7 @@
             };
         },
         methods: {
-            getApps () {
-                var path = this.$route.path;
-                var queryIndex = path.indexOf('?');
-                var queryString = (queryIndex !== -1) ? path.substring(queryIndex) : '';
-                this.$http.get('/api/apps' + queryString).then(function(response) {
-                    this.apps = response.data.data ? response.data.data : [];
-                    this.dataReady = true;
-                });
-            },
-            ok () {
+            add () {
                 this.$http.post('/api/apps', this.to_create).then(function(response){
                     if (parseInt(response.data.code) == 0) {
                         this.$Message.success('新增成功', 2);
@@ -99,8 +86,14 @@
                     }
                 });
             },
-            cancel () {
-                this.$Message.info('点击了取消');
+            getApps () {
+                var path = this.$route.path;
+                var queryIndex = path.indexOf('?');
+                var queryString = (queryIndex !== -1) ? path.substring(queryIndex) : '';
+                this.$http.get('/api/apps' + queryString).then(function(response) {
+                    this.apps = response.data.data ? response.data.data : [];
+                    this.dataReady = true;
+                });
             },
             confirm_remove (index) {
                 this.confirm_modal = true;
