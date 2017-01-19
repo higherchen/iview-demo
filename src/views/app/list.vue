@@ -5,7 +5,7 @@
 </style>
 <template>
     <Modal :visible.sync="new_app" title="新增App" @on-ok="add">
-        <i-form class="form" label-position="left" :label-width="100">
+        <i-form label-position="left" :label-width="100">
             <Form-item label="App name">
                 <i-input :value.sync="to_create.name" placeholder="请输入App名称"></i-input>
             </Form-item>

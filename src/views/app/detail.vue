@@ -4,7 +4,7 @@
     }
 </style>
 <template>
-    <i-form class="form" :model="user_handle" label-position="left" :label-width="100">
+    <i-form class="form" label-position="left" :label-width="100">
         <Form-item label="App name">
             <i-input :value.sync="name" placeholder="请输入App名称"></i-input>
         </Form-item>

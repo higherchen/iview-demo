@@ -2,13 +2,10 @@
     .pager{
         margin: 10px 0;
     }
-    .search-form{
-        padding: 10px 0px;
-    }
 </style>
 <template>
     <Modal :visible.sync="new_user" title="新增用户" @on-ok="add">
-        <i-form class="form" label-position="left" :label-width="100">
+        <i-form label-position="left" :label-width="100">
             <Form-item label="账号">
                 <i-input :value.sync="to_create.username" placeholder="请输入账号（用户名）"></i-input>
             </Form-item>
@@ -23,9 +20,9 @@
             </Form-item>
         </i-form>
     </Modal>
-    <i-form v-ref:form-inline :model="searchForm" inline>
-        <Form-item prop="user">
-            <i-input type="text" :value.sync="searchForm.keyword" placeholder="输入账号/昵称"></i-input>
+    <i-form v-ref:form-inline inline>
+        <Form-item>
+            <i-input type="text" :value.sync="keyword" placeholder="输入账号/昵称"></i-input>
         </Form-item>
         <Form-item>
             <i-button type="primary" @click="search()">搜索</i-button>
@@ -46,15 +43,13 @@
             data: function (transition) {
                 this.getUsers();
                 if (this.$route.query.name) {
-                    this.searchForm.keyword = this.$route.query.name;
+                    this.keyword = this.$route.query.name;
                 }
             }
         },
         data: function() {
             return {
-                searchForm: {
-                    keyword: ''
-                },
+                keyword: '',
                 new_user: false,
                 columns: [
                     {
@@ -105,7 +100,7 @@
             search () {
                 var path = this.$route.path;
                 var $route = this.$route;
-                var keyword = this.searchForm.keyword;
+                var keyword = this.keyword;
                 if (keyword) {
                     $route.query.name = keyword;
                 } else {

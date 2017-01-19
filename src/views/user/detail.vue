@@ -4,7 +4,7 @@
     }
 </style>
 <template>
-    <i-form class="form" :model="user_handle" label-position="left" :label-width="100">
+    <i-form class="form" label-position="left" :label-width="100">
         <Form-item label="用户名">
             <i-input disabled :value.sync="username"></i-input>
         </Form-item>
